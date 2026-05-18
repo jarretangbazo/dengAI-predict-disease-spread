@@ -1,13 +1,13 @@
 <!-- omit in toc -->
-# Flu Shot Learning
+# DengAI: Predicting Disease Spread
 <!-- omit in toc -->
 ### Predict H1N1 and Seasonal Flu Vaccines
-**DrivenData Competition:** https://www.drivendata.org/competitions/66/flu-shot-learning/
+**DrivenData Competition:** https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/
 
-Predict the likelihood that a survey respondent received the H1N1 and seasonal flu vaccines, using background, opinion, and behavioral features from the United States Centers for Disease Control's 2009 National H1N1 Flu Survey.
+Using environmental data collected by U.S. Federal Government agencies to predict the number of dengue fever cases reported each week in San Juan, Puerto Rico and Iquitos, Peru.
 
 [![Live Demo](https:/img.shields.io/badge/Live%20Demo-Streamlit-red)](https://url.streamlit.app)
-[![Competition](https:/img.shields.io/badge/DrivenData-%2366-blue)](https://www.drivendata.org/competitions/66/flu-shot-learning/)
+[![Competition](https:/img.shields.io/badge/DrivenData-%2366-blue)](https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/)
 
 ---
 <!-- omit in toc -->
@@ -32,16 +32,18 @@ Predict the likelihood that a survey respondent received the H1N1 and seasonal f
 ## Competition
 
 ### Problem Definition
-Public health agencies need to understand what drives vaccine acceptance and hesitancy to design effective outreach campaigns. This project builds a multi-label classifier that predicts two independent binary outcomes per respondent: HINI vaccine uptake and seasonal flu vaccine uptake.
+Dengue fever is a mosquito-borne disease that occurs in tropical and sub-tropical parts of the world. In mild cases, symptoms are similar to the flu: fever, rash, and muscle and joint pain. In severe cases, dengue fever can cause severe bleeding, low blood pressure, and even death.
+
+Because it is carried by mosquitoes, the transmission dynamics of dengue are related to climate variables such as temperature and precipitation. Although the relationship to climate is complex, a growing number of scientists argue that climate change is likely to produce distributional shifts that will have significant public health implications worldwide.
+
+In recent years dengue fever has been spreading. Historically, the disease has been most prevalent in Southeast Asia and the Pacific islands. These days many of the nearly half billion cases per year are occurring in Latin America.
 
 **Why it matters**
-Understanding what drives vaccine uptake (and hesitancy) allows public health agencies to design better outreach campaigns, target under-vaccinated populations, and anticipate demand. This applies directly to future pandemics, including COVID-19.
+An understanding of the relationship between climate and dengue dynamics can improve research initiatives and resource allocation to help fight life-threatening pandemics.
 
 ### Task
 
-Given survey responses about a person's background, opinions, and behaviors, predict two binary outcomes:
-- Did they receive the **H1N1 vaccine**? (`h1n1_vaccine`: 0 or 1)
-- Did they receive the **seasonal flu vaccine**? (`seasonal_vaccine`: 0 or 1)
+Using environmental data collected by various U.S. Federal Government agencies—from the Centers for Disease Control and Prevention to the National Oceanic and Atmospheric Administration in the U.S. Department of Commerce, predict the number of dengue fever cases reported each week in San Juan, Puerto Rico and Iquitos, Peru.
 
 ### Getting the Data
 
@@ -63,7 +65,7 @@ Given survey responses about a person's background, opinions, and behaviors, pre
 ### Project Structure
 
 ```
-flu-shot-learning/
+dengai-predict-disease-spread/
 ├── data/
 │   ├── raw/             # Raw competition files (not committed)
 │   ├── processed/       # Cleaned and engineered datasets
@@ -91,9 +93,9 @@ flu-shot-learning/
 ### Local Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/flu-shot-learning.git
-cd flu-shot-learning
-python -m venv flu_env && source flu_env/bin/activate
+git clone https://github.com/YOUR_USERNAME/dengai-predict-disease-spread.git
+cd dengai-predict-disease-spread
+python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 streamlit run app.py
 ```
@@ -131,4 +133,4 @@ Python | pandas | scikit-learn | XGBoost | LightGBM | SHAP | Optuna | MLflow | F
 
 ---
 
-DrivenData. (2015). *Flu Shot Learning: Predict H1N1 and Seasonal Flu Vaccines.* Retrieved May 10, 2026 from https://www.drivendata.org/competitions/66/flu-shot-learning/.
+DrivenData. (2015). *DengAI: Predicting Disease Spread.* Retrieved May 10, 2026 from https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/.

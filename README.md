@@ -32,18 +32,13 @@ Using environmental data collected by U.S. Federal Government agencies to predic
 ## Competition
 
 ### Problem Definition
-Dengue fever is a mosquito-borne disease that occurs in tropical and sub-tropical parts of the world. In mild cases, symptoms are similar to the flu: fever, rash, and muscle and joint pain. In severe cases, dengue fever can cause severe bleeding, low blood pressure, and even death.
+Dengue fever is a mosquito-borne disease that occurs in tropical and sub-tropical parts of the world. In mild cases, symptoms are similar to the flu: fever, rash, and muscle and joint pain. In severe cases, dengue fever can cause severe bleeding, low blood pressure, and even death. In recent years dengue fever has been spreading. Historically, the disease has been most prevalent in Southeast Asia and the Pacific islands. These days many of the nearly half billion cases per year are occurring in Latin America.
 
-Because it is carried by mosquitoes, the transmission dynamics of dengue are related to climate variables such as temperature and precipitation. Although the relationship to climate is complex, a growing number of scientists argue that climate change is likely to produce distributional shifts that will have significant public health implications worldwide.
-
-In recent years dengue fever has been spreading. Historically, the disease has been most prevalent in Southeast Asia and the Pacific islands. These days many of the nearly half billion cases per year are occurring in Latin America.
-
-**Why it matters**
-An understanding of the relationship between climate and dengue dynamics can improve research initiatives and resource allocation to help fight life-threatening pandemics.
+Because it is carried by mosquitoes, the transmission dynamics of dengue are related to climate variables such as temperature and precipitation. An understanding of the relationship between climate and dengue dynamics can improve research initiatives and resource allocation to help life-threatening pandemics.
 
 ### Task
 
-Using environmental data collected by various U.S. Federal Government agencies—from the Centers for Disease Control and Prevention to the National Oceanic and Atmospheric Administration in the U.S. Department of Commerce, predict the number of dengue fever cases reported each week in San Juan, Puerto Rico and Iquitos, Peru.
+Using environmental data collected by various U.S. Federal Government agencies, from the Centers for Disease Control and Prevention to the National Oceanic and Atmospheric Administration in the U.S. Department of Commerce, predict the number of dengue fever cases reported each week in San Juan, Puerto Rico and Iquitos, Peru. The competition metric is **Mean Absolute Error (MAE)**.
 
 ### Getting the Data
 
@@ -55,9 +50,9 @@ Using environmental data collected by various U.S. Federal Government agencies�
 
 | File | Description |
 |------|-------------|
-| `training_set_features.csv` | Survey responses for ~26,700 training respondents |
-| `training_set_labels.csv` | The two vaccine targets for each training respondent |
-| `test_set_features.csv` | Survey responses for ~26,700 test respondents |
+| `training_set_features.csv` | Weekly environmental features for 1,456 training weeks |
+| `training_set_labels.csv` | Weekly dengue case counts for each training week |
+| `test_set_features.csv` | Weekly environmental features for 416 test weeks |
 | `submission_format.csv` | Template showing the required submission structure |
 
 ## Environment Setup
@@ -67,27 +62,21 @@ Using environmental data collected by various U.S. Federal Government agencies�
 ```
 dengai-predict-disease-spread/
 ├── data/
-│   ├── raw/             # Raw competition files (not committed)
-│   ├── processed/       # Cleaned and engineered datasets
-├── notebooks/           # EDA and experimentation
+│   ├── raw/                              # Raw competition files (not committed)
+│   └── processed/                        # Cleaned and engineered datasets
+├── notebooks/
 │   ├── 01_eda.ipynb
 │   ├── 02_data_cleaning.ipynb
-│   └── 03_feature_engineering.ipynb
-│   └── 04_baseline_models.ipynb
-│   └── 05_advanced_models.ipynb
+│   ├── 03_feature_engineering.ipynb
+│   ├── 04_baseline_models.ipynb
+│   ├── 05_advanced_models.ipynb
 │   └── 06_model_evaluation.ipynb
+├── models/                               # Saved model files (not committed)
+├── submissions/                          # Competition CSV files
 ├── reports/           
-│   ├── figures
-├── src/
-│   ├── features.py      # Feature engineering functions
-│   ├── train.py         # Training and MLflow logging script
-│   └── api.py           # FastAPI deployment
-├── models/              # Saved model files (not committed)
-├── submissions/         # Competition CSV files
-├── logs/                # Prediction and monitoring logs
-├── app.py               # Streamlit demo app
-├── Dockerfile
+│   └── figures                            # EDA and evaluation plots
 ├── requirements.txt
+└── README.md
 ```
 
 ### Local Setup
@@ -97,22 +86,12 @@ git clone https://github.com/YOUR_USERNAME/dengai-predict-disease-spread.git
 cd dengai-predict-disease-spread
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-streamlit run app.py
-```
-
-To launch the MLflow experiment dashboard:
-```bash
-mlflow ui   # opens at http://localhost:5000
-```
-
-To run the prediction API:
-```bash
-uvicorn src.api:app --reload    #opens at http://localhost:8000
+jupyter notebook notebooks/01_eda.ipynb
 ```
 
 ### Tech Stack
 
-Python | pandas | scikit-learn | XGBoost | LightGBM | SHAP | Optuna | MLflow | FastAPI | Docker | Streamlit
+Python | pandas | scikit-learn | XGBoost | LightGBM | SHAP | matplotlib | seaborn
 
 ---
 
@@ -120,16 +99,37 @@ Python | pandas | scikit-learn | XGBoost | LightGBM | SHAP | Optuna | MLflow | F
 
 ### Results
 
-| Model | H1N1 AUC | Seasonal AUC | Mean AUC |
-|-------|----------|--------------|----------|
-| Logistic Regression (baseline) | | | |
-| XGBoost (tuned) | | | |
-| XGBoost + LightGBM ensemble | | | |
+| **Model** | **SJ CV MAE** | **IQ CV MAE** | **Combined CV MAE** |
+|-----------|---------------|---------------|---------------------|
+| Naive (mean) baseline | - | - | 23.00 |
+| Ridge | 33.03 | 7.60 | 23.95 |
+| Random Forest | 28.94 | 7.43 | 21.25 |
+| XGBoost | 28.90 | 7.66 | 21.31 |
+| XGBoost + LightGBM ensemble | 27.01 | 7.07 | 19.89 |
+| **LightGBM (city-specific)** | **23.54** | **6.63** | **17.50** |
+
+Hold-out evaluation (last 20% of training data per city):
+
+| **City** | **MAE** | **RMSE** | **R-squared** |
+|-----------|---------------|---------------|---------------------|
+| San Juan | 6.52 | 15.57 | 0.750 |
+| Iquitos | 2.70 | 6.91 | 0.634 |
+| Overall (weighted) | 5.16 | - | - |
 
 
 ### Key Findings
 
-*Summary of key findings forthcoming*
+**What works:** City-specific LightGBM models with L1 objective outperform all other approaches, achieving a 24% improvement over the naive baseline. Training separate models for San Juan and Iquitos is critical. The two cities have different climate patterns, case magnitudes, and seasonal drivers.
+
+**Most important features**
+
+*San Juan:* Long-run (12-week rolling) minimum temperature and relative humidity dominate. Sustained warm nights and high humidity over months, not individual spikes, predict dengue burden.
+
+*Iquitos:* Seasonality (week-of-year cyclical encoding) is the single strongest signal, followed by atmospheric moisture (dew point, specific humidity). Dengue in Iquitos follows the wet season closely and predictably.
+
+**Feature engineering matters:** Adding temporal lags (1-12 weeks) and rolling window features (4, 8, 12 weeks) was the largest single driver of improvement, reflecting the ~2-week mosquito lifecycle and ~1-2-week transmission delay between environmental conditions and reported cases.
+
+**Public health implication:** For San Juan, a 12-week sustained humidity + temperature composite is the key monitoring signal. For Iquitos, seasonal calendar timing is sufficient for basic resource pre-positioning; short-term humidity deviations provide secondary early-warning value.
 
 ---
 

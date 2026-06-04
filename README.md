@@ -1,7 +1,7 @@
 <!-- omit in toc -->
 # DengAI: Predicting Disease Spread
 <!-- omit in toc -->
-### Predict H1N1 and Seasonal Flu Vaccines
+### Predict Dengue Fever Spread
 **DrivenData Competition:** https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/
 
 Using environmental data collected by U.S. Federal Government agencies to predict the number of dengue fever cases reported each week in San Juan, Puerto Rico and Iquitos, Peru.

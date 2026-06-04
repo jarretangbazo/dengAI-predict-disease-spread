@@ -6,9 +6,6 @@
 
 Using environmental data collected by U.S. Federal Government agencies to predict the number of dengue fever cases reported each week in San Juan, Puerto Rico and Iquitos, Peru.
 
-[![Live Demo](https:/img.shields.io/badge/Live%20Demo-Streamlit-red)](https://url.streamlit.app)
-[![Competition](https:/img.shields.io/badge/DrivenData-%2366-blue)](https://www.drivendata.org/competitions/44/dengai-predicting-disease-spread/)
-
 ---
 <!-- omit in toc -->
 ## Table of Contents
